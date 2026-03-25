@@ -126,28 +126,50 @@ def diff(yaml_a, yaml_b, device):
 
 @main.command()
 @click.argument("yaml_path")
-@click.option("--targets", required=True, help="YAML file with optimization targets")
+@click.option("--targets", default=None, help="YAML file with optimization targets")
+@click.option("--maximize-wins", default=None, help="Maximize wins against reference (e.g. oklab)")
 @click.option("--method", default="cma_es", help="Optimization method")
 @click.option("--free", multiple=True, help="Free parameter groups")
 @click.option("--fixed", multiple=True, help="Fixed parameter groups")
-@click.option("--generations", default=300, type=int)
-@click.option("--population", default=128, type=int)
-def solve(yaml_path, targets, method, free, fixed, generations, population):
-    """Constraint-first optimization."""
-    import yaml as yaml_mod
+@click.option("--generations", default=200, type=int)
+@click.option("--population", default=64, type=int)
+@click.option("--sigma", default=0.03, type=float, help="CMA-ES initial step size")
+def solve(yaml_path, targets, maximize_wins, method, free, fixed,
+          generations, population, sigma):
+    """Optimize a color space.
+
+    Two modes:
+      --targets targets.yaml     Satisfy min/max metric constraints
+      --maximize-wins oklab      Maximize head-to-head wins vs reference
+
+    Examples:
+      spaceforge solve preset.yaml --maximize-wins oklab --free M2 L_corr --fixed M1
+      spaceforge solve preset.yaml --targets targets.yaml
+    """
     from .engine import SpaceForge
 
-    with open(targets) as f:
-        targets_config = yaml_mod.safe_load(f)
+    if not targets and not maximize_wins:
+        click.echo("Error: provide --targets or --maximize-wins")
+        return
 
     sf = SpaceForge(yaml_path)
+
+    targets_dict = None
+    if targets:
+        import yaml as yaml_mod
+        with open(targets) as f:
+            targets_config = yaml_mod.safe_load(f)
+        targets_dict = targets_config.get("targets", {})
+
     sf.solve(
-        targets=targets_config.get("targets", {}),
+        targets=targets_dict,
+        maximize_wins_vs=maximize_wins,
         free_params=list(free) if free else None,
         fixed_params=list(fixed) if fixed else None,
         method=method,
         generations=generations,
         population=population,
+        sigma=sigma,
     )
 
 

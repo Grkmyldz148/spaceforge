@@ -176,16 +176,23 @@ class SpaceForge:
         else:
             raise ValueError(f"Unknown format: {format}")
 
-    def solve(self, targets: dict, free_params: list[str] | None = None,
+    def solve(self, targets: dict | None = None,
+              maximize_wins_vs: str | None = None,
+              free_params: list[str] | None = None,
               fixed_params: list[str] | None = None,
               method: str = "cma_es", **kwargs) -> dict:
-        """Constraint-first optimization."""
+        """Optimize the color space.
+
+        Two modes:
+            targets: satisfy min/max constraints on metrics
+            maximize_wins_vs: maximize head-to-head wins vs reference
+        """
         from .optimizer.solver import solve
         return solve(
             self.pipeline, self.params, self.name,
-            targets=targets, free_params=free_params,
-            fixed_params=fixed_params, method=method,
-            device=self.device, **kwargs,
+            targets=targets, maximize_wins_vs=maximize_wins_vs,
+            free_params=free_params, fixed_params=fixed_params,
+            method=method, device=self.device, **kwargs,
         )
 
     def report(self, output_path: str = "report.html",

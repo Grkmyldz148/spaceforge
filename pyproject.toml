@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "spaceforge"
+version = "0.1.0"
+description = "Color Space Development Engine — design, evaluate, optimize, and compare perceptual color spaces"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "Gorkem Yildiz", email = "gorkem@gorkemyildiz.com"},
+]
+keywords = [
+    "color-space",
+    "color-science",
+    "perceptual-color",
+    "color-engineering",
+    "oklab",
+    "cielab",
+    "color-pipeline",
+    "color-benchmark",
+    "gamut-mapping",
+    "color-optimization",
+    "color-appearance",
+    "color-difference",
+    "deltaE",
+    "color-management",
+    "computational-color",
+    "color-vision",
+    "hue-uniformity",
+    "gradient-quality",
+    "pytorch",
+    "color-model",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "torch>=2.0",
+    "numpy>=1.24",
+    "pyyaml>=6.0",
+    "cma>=3.3",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/Grkmyldz148/spaceforge"
+Repository = "https://github.com/Grkmyldz148/spaceforge"
+Issues = "https://github.com/Grkmyldz148/spaceforge/issues"
+
+[project.scripts]
+spaceforge = "spaceforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]

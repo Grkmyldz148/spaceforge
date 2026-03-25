@@ -1,0 +1,25 @@
+# OKLab — Björn Ottosson (2020)
+# M1→cbrt→M2, no enrichment
+name: OKLab
+
+pipeline:
+  - type: matrix
+    name: M1
+  - type: transfer
+    function: cbrt
+  - type: matrix
+    name: M2
+
+params:
+  # Note: OKLab's published M1 is in sRGB domain. We convert to XYZ domain.
+  # M1_xyz = M1_srgb @ inv(M_srgb_to_xyz)
+  # These are the XYZ-domain matrices computed from OKLab's published constants.
+  # Computed: M1_srgb @ inv(M_srgb_to_xyz) — exact XYZ-domain matrix
+  M1:
+    - [0.8187985883032540, 0.3620277493294354, -0.1288275302451293]
+    - [0.0328604587632766, 0.9293629304937852, 0.0361893924939526]
+    - [0.0481337081895724, 0.2642425309122435, 0.6337149022717601]
+  M2:
+    - [0.2104542553, 0.7936177850, -0.0040720468]
+    - [1.9779984951, -2.4285922050, 0.4505937099]
+    - [0.0259040371, 0.7827717662, -0.8086757660]

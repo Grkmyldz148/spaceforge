@@ -1,0 +1,22 @@
+# Helmlab GenSpace H_v2 — Naka-Rushton transfer + chroma enrichment
+# Architecture: H_NakaRushtonCp
+# Pipeline: M1 → NR(clamp) → M2 → chroma_enrichment → l_correction → Lab
+#
+# IMPORTANT: chroma_enrichment comes BEFORE l_correction because
+# the L-dependent chroma scaling uses raw L (before correction).
+name: HelmGen-H-v2
+
+checkpoint: ../../checkpoints/H_v2_params.json
+
+pipeline:
+  - type: matrix
+    name: M1
+  - type: transfer
+    function: naka_rushton
+  - type: matrix
+    name: M2
+  - type: chroma_enrichment
+    power: true
+    l_dependent: true
+  - type: l_correction
+    degree: 3

@@ -1,0 +1,8 @@
+# CIE L*a*b* (1976) — the classic perceptual space
+# Special pipeline: XYZ/D65 → f(.) → L*a*b*
+# Not a standard M1→transfer→M2 pipeline — uses custom CIELab block
+name: CIELab
+
+# CIE Lab is a built-in reference space, not a pipeline preset.
+# Use --vs cielab to compare against it.
+builtin: cielab

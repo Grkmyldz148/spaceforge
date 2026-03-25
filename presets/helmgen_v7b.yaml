@@ -1,0 +1,16 @@
+# Helmlab GenSpace v7b — enriched with L correction
+# M1→cbrt→M2→L_corr→Lab
+# 24-21 vs OKLab on ColorBench head-to-head
+name: HelmGen-v7b
+
+checkpoint: ../../checkpoints/v7b_nodelta.json
+
+pipeline:
+  - type: matrix
+    name: M1
+  - type: transfer
+    function: cbrt
+  - type: matrix
+    name: M2
+  - type: l_correction
+    degree: 3

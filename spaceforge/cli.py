@@ -358,6 +358,17 @@ def _eval_checkpoint(json_path: str, refs: list[str], device: str | None):
     print_summary(comp)
 
 
+@main.command()
+@click.option("--max", "max_archs", default=100, type=int, help="Max architectures to test")
+@click.option("--device", default=None)
+@click.option("--output", "-o", default="arch_search_results", help="Output directory")
+def search(max_archs, device, output):
+    """Search 100+ pipeline architectures — find the best design."""
+    from .architect import run_architecture_search
+    run_architecture_search(max_archs=max_archs, device=device,
+                            output_dir=output, verbose=True)
+
+
 def _build_reference_sf(ref_name: str, device: str | None = None):
     """Build a SpaceForge instance for a reference space."""
     from .core.pipeline import Pipeline

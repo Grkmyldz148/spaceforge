@@ -1,0 +1,24 @@
+# HelmGen v7b + hue-dependent rotation + chroma enrichment
+# Architecture search winner: best CV out of 2058 variants
+# Pipeline: M1 → cbrt → M2 → chroma → hue_rot_dep → L_corr
+#
+# CRITICAL: hue_rot_dep Fourier amplitudes must stay small (< 0.15)
+# or inverse diverges. Previous experiment failed with c1=0.5.
+name: HelmGen-v7b-HueRotDep
+
+checkpoint: ../../checkpoints/v7b_nodelta.json
+
+pipeline:
+  - type: matrix
+    name: M1
+  - type: transfer
+    function: cbrt
+  - type: matrix
+    name: M2
+  - type: chroma_enrichment
+    power: true
+    l_dependent: true
+  - type: hue_rotation
+    mode: hue_dependent
+  - type: l_correction
+    degree: 3

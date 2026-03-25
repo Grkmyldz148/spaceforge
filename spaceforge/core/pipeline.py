@@ -103,7 +103,7 @@ def _build_block(spec: dict) -> PipelineBlock:
     from .blocks import (
         MatrixBlock, CbrtTransfer, PowerTransfer, NakaRushtonTransfer,
         LogTransfer, CrossTermBlock, LCorrectionBlock,
-        ChromaEnrichmentBlock, HueRotationBlock,
+        ChromaEnrichmentBlock, HueRotationBlock, BlueFixBlock,
     )
 
     btype = spec["type"]
@@ -148,6 +148,15 @@ def _build_block(spec: dict) -> PipelineBlock:
         return HueRotationBlock(
             name=spec.get("name", "hue_rotation"),
             mode=spec.get("mode", "global"),
+        )
+    elif btype == "blue_fix":
+        return BlueFixBlock(
+            name=spec.get("name", "blue_fix"),
+            da=spec.get("da", 0.025),
+            db=spec.get("db", 0.030),
+            h0=spec.get("h0", 250.0),
+            sigma=spec.get("sigma", 35.0),
+            c_gate=spec.get("c_gate", 0.12),
         )
     else:
         raise ValueError(f"Unknown block type: {btype}")
